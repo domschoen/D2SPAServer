@@ -1,0 +1,15 @@
+{
+    attributes = (
+        {columnName = acronym; name = acronym; prototypeName = varchar10; }, 
+        {columnName = address; name = address; prototypeName = varchar100; }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {columnName = name; name = name; prototypeName = varchar100; }
+    ); 
+    attributesUsedForLocking = (acronym, address, id, name); 
+    className = "your.app.model.Customer"; 
+    classProperties = (acronym, address, name); 
+    externalName = Customer; 
+    fetchSpecificationDictionary = {}; 
+    name = Customer; 
+    primaryKeyAttributes = (id); 
+}
