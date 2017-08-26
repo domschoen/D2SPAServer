@@ -7,9 +7,18 @@
     ); 
     attributesUsedForLocking = (acronym, address, id, name); 
     className = "your.app.model.Customer"; 
-    classProperties = (acronym, address, name); 
+    classProperties = (acronym, address, name, projects); 
     externalName = Customer; 
     fetchSpecificationDictionary = {}; 
     name = Customer; 
     primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = Project; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = customerID; sourceAttribute = id; }); 
+            name = projects; 
+        }
+    ); 
 }

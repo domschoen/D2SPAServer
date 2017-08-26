@@ -23,6 +23,7 @@ public abstract class _Customer extends  ERXGenericRecord {
   public static final ERXKey<String> NAME = new ERXKey<String>("name");
 
   // Relationship Keys
+  public static final ERXKey<your.app.model.Project> PROJECTS = new ERXKey<your.app.model.Project>("projects");
 
   // Attributes
   public static final String ACRONYM_KEY = ACRONYM.key();
@@ -30,6 +31,7 @@ public abstract class _Customer extends  ERXGenericRecord {
   public static final String NAME_KEY = NAME.key();
 
   // Relationships
+  public static final String PROJECTS_KEY = PROJECTS.key();
 
   private static final Logger log = LoggerFactory.getLogger(_Customer.class);
 
@@ -66,6 +68,91 @@ public abstract class _Customer extends  ERXGenericRecord {
   public void setName(String value) {
     log.debug( "updating name from {} to {}", name(), value);
     takeStoredValueForKey(value, _Customer.NAME_KEY);
+  }
+
+  public NSArray<your.app.model.Project> projects() {
+    return (NSArray<your.app.model.Project>)storedValueForKey(_Customer.PROJECTS_KEY);
+  }
+
+  public NSArray<your.app.model.Project> projects(EOQualifier qualifier) {
+    return projects(qualifier, null, false);
+  }
+
+  public NSArray<your.app.model.Project> projects(EOQualifier qualifier, boolean fetch) {
+    return projects(qualifier, null, fetch);
+  }
+
+  public NSArray<your.app.model.Project> projects(EOQualifier qualifier, NSArray<EOSortOrdering> sortOrderings, boolean fetch) {
+    NSArray<your.app.model.Project> results;
+    if (fetch) {
+      EOQualifier fullQualifier;
+      EOQualifier inverseQualifier = ERXQ.equals(your.app.model.Project.CUSTOMER_KEY, this);
+
+      if (qualifier == null) {
+        fullQualifier = inverseQualifier;
+      }
+      else {
+        fullQualifier = ERXQ.and(qualifier, inverseQualifier);
+      }
+
+      results = your.app.model.Project.fetchProjects(editingContext(), fullQualifier, sortOrderings);
+    }
+    else {
+      results = projects();
+      if (qualifier != null) {
+        results = (NSArray<your.app.model.Project>)EOQualifier.filteredArrayWithQualifier(results, qualifier);
+      }
+      if (sortOrderings != null) {
+        results = (NSArray<your.app.model.Project>)EOSortOrdering.sortedArrayUsingKeyOrderArray(results, sortOrderings);
+      }
+    }
+    return results;
+  }
+
+  public void addToProjects(your.app.model.Project object) {
+    includeObjectIntoPropertyWithKey(object, _Customer.PROJECTS_KEY);
+  }
+
+  public void removeFromProjects(your.app.model.Project object) {
+    excludeObjectFromPropertyWithKey(object, _Customer.PROJECTS_KEY);
+  }
+
+  public void addToProjectsRelationship(your.app.model.Project object) {
+    log.debug("adding {} to projects relationship", object);
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+      addToProjects(object);
+    }
+    else {
+      addObjectToBothSidesOfRelationshipWithKey(object, _Customer.PROJECTS_KEY);
+    }
+  }
+
+  public void removeFromProjectsRelationship(your.app.model.Project object) {
+    log.debug("removing {} from projects relationship", object);
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+      removeFromProjects(object);
+    }
+    else {
+      removeObjectFromBothSidesOfRelationshipWithKey(object, _Customer.PROJECTS_KEY);
+    }
+  }
+
+  public your.app.model.Project createProjectsRelationship() {
+    EOEnterpriseObject eo = EOUtilities.createAndInsertInstance(editingContext(),  your.app.model.Project.ENTITY_NAME );
+    addObjectToBothSidesOfRelationshipWithKey(eo, _Customer.PROJECTS_KEY);
+    return (your.app.model.Project) eo;
+  }
+
+  public void deleteProjectsRelationship(your.app.model.Project object) {
+    removeObjectFromBothSidesOfRelationshipWithKey(object, _Customer.PROJECTS_KEY);
+    editingContext().deleteObject(object);
+  }
+
+  public void deleteAllProjectsRelationships() {
+    Enumeration<your.app.model.Project> objects = projects().immutableClone().objectEnumerator();
+    while (objects.hasMoreElements()) {
+      deleteProjectsRelationship(objects.nextElement());
+    }
   }
 
 

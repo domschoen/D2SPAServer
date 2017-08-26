@@ -2,5 +2,8 @@
     EOModelVersion = "2.1"; 
     adaptorName = JDBC; 
     connectionDictionary = {}; 
-    entities = ({className = "your.app.model.Customer"; name = Customer; }); 
+    entities = (
+        {className = "your.app.model.Customer"; name = Customer; }, 
+        {className = "your.app.model.Project"; name = Project; }
+    ); 
 }

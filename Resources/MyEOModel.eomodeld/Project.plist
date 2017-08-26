@@ -1,0 +1,30 @@
+{
+    attributes = (
+        {
+            allowsNull = N; 
+            columnName = customerID; 
+            name = customerID; 
+            prototypeName = id; 
+        }, 
+        {columnName = descr; name = descr; prototypeName = varchar1000; }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {columnName = projectNumber; name = projectNumber; prototypeName = intNumber; }
+    ); 
+    attributesUsedForLocking = (customerID, descr, id, projectNumber); 
+    className = "your.app.model.Project"; 
+    classProperties = (customer, descr, projectNumber); 
+    externalName = Project; 
+    fetchSpecificationDictionary = {}; 
+    name = Project; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = Customer; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = customerID; }); 
+            name = customer; 
+        }
+    ); 
+}
