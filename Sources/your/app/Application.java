@@ -29,6 +29,10 @@ public class Application extends ERXApplication {
 
     private void setupGenericWebServices() {
         ERXRouteRequestHandler routeRequestHandler = new ERXRouteRequestHandler(ERXRouteRequestHandler.WO);
+        
+		routeRequestHandler.addDefaultRoutes("Menu");
+
+        
         // Generic web service for each entity !
         for (EOModel eachModel : EOModelGroup.defaultGroup().models()) {
             for (EOEntity eachEntity : eachModel.entities()) {
