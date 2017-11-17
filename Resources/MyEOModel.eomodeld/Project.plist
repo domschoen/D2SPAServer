@@ -1,12 +1,17 @@
 {
     attributes = (
         {
-            allowsNull = N; 
+            allowsNull = Y; 
             columnName = customerID; 
             name = customerID; 
             prototypeName = id; 
         }, 
-        {columnName = descr; name = descr; prototypeName = varchar1000; }, 
+        {
+            allowsNull = Y; 
+            columnName = descr; 
+            name = descr; 
+            prototypeName = varchar1000; 
+        }, 
         {allowsNull = N; name = id; prototypeName = id; }, 
         {columnName = projectNumber; name = projectNumber; prototypeName = intNumber; }
     ); 
@@ -20,7 +25,6 @@
     relationships = (
         {
             destination = Customer; 
-            isMandatory = Y; 
             isToMany = N; 
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = id; sourceAttribute = customerID; }); 
