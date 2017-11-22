@@ -1,4 +1,5 @@
 {
-    rules = (
-    );
+  "rules" = (
+    {"author" = "100"; "class" = "com.webobjects.directtoweb.Rule"; "lhs" = {"class" = "EOAndQualifier"; "qualifiers" = ({"class" = "EOKeyValueQualifier"; "key" = "entity.name"; "selectorName" = "isEqualTo:"; "value" = "Project"; }, {"class" = "EOKeyValueQualifier"; "key" = "propertyKey"; "selectorName" = "isEqualTo:"; "value" = "descr"; }); }; "rhs" = {"class" = "com.webobjects.directtoweb.Assignment"; "keyPath" = "displayNameForProperty"; "value" = "Description"; }; }
+  ); 
 }

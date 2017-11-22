@@ -1,5 +1,7 @@
 package your.app;
 
+import your.app.controller.RuleModelController;
+
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
@@ -7,6 +9,7 @@ import com.webobjects.foundation.NSDictionary;
 
 import er.extensions.appserver.ERXApplication;
 import er.extensions.appserver.navigation.ERXNavigationManager;
+import er.rest.routes.ERXRoute;
 import er.rest.routes.ERXRouteRequestHandler;
 import er.rest.routes.ERXUnsafeReadWriteRouteController;
 
@@ -29,10 +32,11 @@ public class Application extends ERXApplication {
 
     private void setupGenericWebServices() {
         ERXRouteRequestHandler routeRequestHandler = new ERXRouteRequestHandler(ERXRouteRequestHandler.WO);
-        
-		routeRequestHandler.addDefaultRoutes("Menu");
 
-        
+        routeRequestHandler.addDefaultRoutes("Menu");
+        routeRequestHandler.addRoute(new ERXRoute("RuleFiring", "/fireRuleForKey", ERXRoute.Method.Get, RuleModelController.class, "fireRuleForKey"));
+
+
         // Generic web service for each entity !
         for (EOModel eachModel : EOModelGroup.defaultGroup().models()) {
             for (EOEntity eachEntity : eachModel.entities()) {
