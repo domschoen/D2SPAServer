@@ -6,6 +6,7 @@ import com.webobjects.appserver.WOResponse;
 import com.webobjects.directtoweb.D2WContext;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModelGroup;
+import com.webobjects.foundation.NSDictionary;
 
 import er.extensions.eof.ERXKeyFilter;
 import er.rest.routes.ERXRouteController;
@@ -30,6 +31,17 @@ public class RuleModelController extends ERXRouteController {
         return filter;
     }
 
+    private String getDisplayNameForKeyWhenRelationshipWith(D2WContext d2wContext)
+    {
+        String keyWhenRelationship = (String) d2wContext.inferValueForKey("keyWhenRelationship");
+        EOEntity destinationEntity = d2wContext.relationship().destinationEntity();
+
+        D2WContext destinationD2wContext = new D2WContext(d2wContext);
+        destinationD2wContext.setPropertyKey(keyWhenRelationship);
+        destinationD2wContext.setEntity(destinationEntity);
+
+        return destinationD2wContext.displayNameForProperty();
+    }
 
     public WOActionResults fireRuleForKeyAction() {
         String entityName = (String) request().formValueForKey("entity");
@@ -45,7 +57,16 @@ public class RuleModelController extends ERXRouteController {
         if (propertyKey != null)
             d2wContext.setPropertyKey(propertyKey);
 
-        Object result = d2wContext.inferValueForKey(key);
+        Object result = null;
+        if (key.equals("displayNameForKeyWhenRelationship")) {
+            result = getDisplayNameForKeyWhenRelationshipWith(d2wContext);
+        } else {
+            result = d2wContext.inferValueForKey(key);
+        }
+
+        if (result instanceof String) {
+            result = new NSDictionary(result, key);
+        }
 
         return response(result, showFilter());
     }
