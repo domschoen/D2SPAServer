@@ -77,3 +77,39 @@ log4j.logger.er.extensions.ERXConfigurationManager=INFO
 er.extensions.ERXNavigationManager.localizeDisplayKeys=true
 er.extensions.ERXNavigationManager.NavigationMenuFileName = NavigationMenu.plist
 er.extensions.ERXNavigationManager.includeLabelSpanTag = true
+
+####################
+# Debug D2W
+####################
+
+# Used to turn trace rule firing on and off 
+# Note: Tracking rules will generate a tremendous amount of log and 
+#       you should not launch the app from Project Builder. 
+#       Launch the app from a command shell (Terminal for Mac OS X) 
+
+log4j.logger.er.directtoweb.ERD2WDebugEnabled = FATAL
+log4j.logger.er.directtoweb.ERD2WDebugEnabled.componentName = FATAL
+log4j.logger.er.directtoweb.ERD2WDebugEnabled.propertyKey = FATAL
+log4j.logger.er.directtoweb.ERD2WDebugEnabled.componentRules = FATAL
+
+log4j.logger.er.directtoweb.rules.ERD2WTraceRuleFiringEnabled = FATAL
+
+#log4j.logger.er.directtoweb.rules.keyWhenRelationship.fire = DEBUG
+#log4j.logger.er.directtoweb.rules.keyWhenRelationship.candidates = DEBUG
+#log4j.logger.er.directtoweb.rules.keyWhenRelationship.cache = DEBUG
+log4j.logger.er.directtoweb.rules.componentName.fire = FATAL
+log4j.logger.er.directtoweb.rules.componentName.candidates = FATAL
+log4j.logger.er.directtoweb.rules.componentName.cache = FATAL
+#log4j.logger.er.directtoweb.rules.derivedAttributeType.fire = DEBUG
+#log4j.logger.er.directtoweb.rules.derivedAttributeType.candidates = DEBUG
+#log4j.logger.er.directtoweb.rules.derivedAttributeType.cache = DEBUG
+#log4j.logger.er.directtoweb.rules.formatter.fire = DEBUG
+#log4j.logger.er.directtoweb.rules.formatter.candidates = DEBUG
+#log4j.logger.er.directtoweb.rules.formatter.cache = DEBUG
+#log4j.logger.er.directtoweb.rules.hidePropertyName.fire = DEBUG
+#log4j.logger.er.directtoweb.rules.hidePropertyName.candidates = DEBUG
+#log4j.logger.er.directtoweb.rules.hidePropertyName.cache = DEBUG
+#log4j.logger.er.directtoweb.rules.isPropertyEditable.fire = DEBUG
+#log4j.logger.er.directtoweb.rules.isPropertyEditable.candidates = DEBUG
+#log4j.logger.er.directtoweb.rules.isPropertyEditable.cache = DEBUG
+

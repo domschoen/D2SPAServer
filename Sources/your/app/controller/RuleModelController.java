@@ -6,7 +6,12 @@ import com.webobjects.appserver.WOResponse;
 import com.webobjects.directtoweb.D2WContext;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModelGroup;
+import com.webobjects.eoaccess.EOUtilities;
+import com.webobjects.eocontrol.EOEditingContext;
+import com.webobjects.eocontrol.EOEnterpriseObject;
+import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableArray;
 
 import er.extensions.eof.ERXKeyFilter;
 import er.rest.routes.ERXRouteController;
@@ -26,9 +31,33 @@ public class RuleModelController extends ERXRouteController {
         super(request);
     }
 
+    public static ERXKeyFilter showEORefsFilter() {
+        ERXKeyFilter filter = ERXKeyFilter.filterWithNone();
+        filter.include("destinationEos").include("id");
+        filter.include("destinationEos").include("entity");
+        filter.include("destinationEos").include("displayName");
+        return filter;
+    }
+
     public static ERXKeyFilter showFilter() {
         ERXKeyFilter filter = ERXKeyFilter.filterWithAttributes();
         return filter;
+    }
+
+    public static Object oidForEo(EOEnterpriseObject eo) {
+        NSDictionary primaryKey = primaryKeyDictionaryForEo(eo);
+        if ((primaryKey == null) || (primaryKey.count() != 1)) {
+            return null;
+        }
+        return primaryKey.allValues().lastObject();
+    }
+
+    public static NSDictionary primaryKeyDictionaryForEo(EOEnterpriseObject eo)
+    {
+        EOEditingContext ec = eo.editingContext();
+        if (ec == null)
+            return null;
+        return EOUtilities.primaryKeyForObject(ec, eo);
     }
 
     private String getDisplayNameForKeyWhenRelationshipWith(D2WContext d2wContext)
@@ -41,6 +70,24 @@ public class RuleModelController extends ERXRouteController {
         destinationD2wContext.setEntity(destinationEntity);
 
         return destinationD2wContext.displayNameForProperty();
+    }
+
+    String[] eoRefKeys = new String[] { "id", "displayName", "entity" };
+
+    private NSArray<NSDictionary<String, Object>> eoRefs(D2WContext d2wContext)
+    {
+        String keyWhenRelationship = (String) d2wContext.inferValueForKey("keyWhenRelationship");
+        EOEntity destinationEntity = d2wContext.relationship().destinationEntity();
+        String destinationEntityName = destinationEntity.name();
+        NSArray<EOEnterpriseObject> eos = EOUtilities.objectsForEntityNamed(session().defaultEditingContext(), destinationEntityName);
+        NSMutableArray<NSDictionary<String, Object>> result = new NSMutableArray<NSDictionary<String, Object>>();
+        for (EOEnterpriseObject eo : eos) {
+            Object oid = oidForEo(eo);
+            String displayName = (String) eo.valueForKeyPath(keyWhenRelationship);
+            result.addObject(new NSDictionary(new Object[] { oid,
+                    displayName, destinationEntityName }, eoRefKeys));
+        }
+        return result;
     }
 
     public WOActionResults fireRuleForKeyAction() {
@@ -60,13 +107,27 @@ public class RuleModelController extends ERXRouteController {
         Object result = null;
         if (key.equals("displayNameForKeyWhenRelationship")) {
             result = getDisplayNameForKeyWhenRelationshipWith(d2wContext);
+        } else if (key.equals("destinationEos")) {
+            NSArray eoRefs = eoRefs(d2wContext);
+            result = new NSDictionary(eoRefs, key);
+
+            System.out.println("DESTINATION EOS" + result);
+            return response(result, showEORefsFilter());
+
         } else {
             result = d2wContext.inferValueForKey(key);
         }
 
         if (result instanceof String) {
+            System.out.println("D2WContext : "
+                    + d2wContext
+                    + "  key: "
+                    + key
+                    + " value: "
+                    + result);
             result = new NSDictionary(result, key);
         }
+        System.out.println("Result " + result);
 
         return response(result, showFilter());
     }

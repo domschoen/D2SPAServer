@@ -5,12 +5,12 @@
 	<classpathentry kind="con" path="WOFramework/ERJars"/>
 	<classpathentry kind="con" path="WOFramework/ERPrototypes"/>
 	<classpathentry kind="con" path="WOFramework/ERAttributeExtension"/>
-	<classpathentry kind="con" path="WOFramework/ERModernLook"/>
-	<classpathentry kind="con" path="WOFramework/ERCoolComponents"/>
-	<classpathentry kind="con" path="WOFramework/JavaDTWGeneration"/>
-	<classpathentry kind="con" path="WOFramework/ERModernDefaultSkin"/>
-	<classpathentry kind="con" path="WOFramework/JavaDirectToWeb"/>
-	<classpathentry kind="con" path="WOFramework/ERModernDirectToWeb"/>
+    <classpathentry kind="con" path="WOFramework/ERModernLook"/>
+    <classpathentry kind="con" path="WOFramework/ERCoolComponents"/>
+    <classpathentry kind="con" path="WOFramework/JavaDTWGeneration"/>
+    <classpathentry kind="con" path="WOFramework/ERModernDefaultSkin"/>
+    <classpathentry kind="con" path="WOFramework/JavaDirectToWeb"/>
+    <classpathentry kind="con" path="WOFramework/ERModernDirectToWeb"/>
 	<classpathentry kind="con" path="WOFramework/ERDirectToWeb"/>
 	<classpathentry kind="con" path="WOFramework/JavaFoundation"/>
 	<classpathentry kind="con" path="WOFramework/JavaXML"/>
