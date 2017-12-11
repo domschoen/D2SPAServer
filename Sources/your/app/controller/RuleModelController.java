@@ -4,6 +4,7 @@ import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
 import com.webobjects.directtoweb.D2WContext;
+import com.webobjects.eoaccess.EOAttribute;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModelGroup;
 import com.webobjects.eoaccess.EOUtilities;
@@ -36,6 +37,7 @@ public class RuleModelController extends ERXRouteController {
         filter.include("destinationEos").include("id");
         filter.include("destinationEos").include("entity");
         filter.include("destinationEos").include("displayName");
+        filter.include("destinationEos").include("pkAttributeName");
         return filter;
     }
 
@@ -72,12 +74,14 @@ public class RuleModelController extends ERXRouteController {
         return destinationD2wContext.displayNameForProperty();
     }
 
-    String[] eoRefKeys = new String[] { "id", "displayName", "entity" };
+    String[] eoRefKeys = new String[] { "id", "displayName", "entity",
+    "pkAttributeName" };
 
     private NSArray<NSDictionary<String, Object>> eoRefs(D2WContext d2wContext)
     {
         String keyWhenRelationship = (String) d2wContext.inferValueForKey("keyWhenRelationship");
         EOEntity destinationEntity = d2wContext.relationship().destinationEntity();
+        EOAttribute pkAttribute = destinationEntity.primaryKeyAttributes().lastObject();
         String destinationEntityName = destinationEntity.name();
         NSArray<EOEnterpriseObject> eos = EOUtilities.objectsForEntityNamed(session().defaultEditingContext(), destinationEntityName);
         NSMutableArray<NSDictionary<String, Object>> result = new NSMutableArray<NSDictionary<String, Object>>();
@@ -85,7 +89,8 @@ public class RuleModelController extends ERXRouteController {
             Object oid = oidForEo(eo);
             String displayName = (String) eo.valueForKeyPath(keyWhenRelationship);
             result.addObject(new NSDictionary(new Object[] { oid,
-                    displayName, destinationEntityName }, eoRefKeys));
+                    displayName,
+                    destinationEntityName, pkAttribute.name() }, eoRefKeys));
         }
         return result;
     }
