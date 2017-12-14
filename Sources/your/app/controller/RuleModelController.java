@@ -7,6 +7,7 @@ import com.webobjects.directtoweb.D2WContext;
 import com.webobjects.eoaccess.EOAttribute;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModelGroup;
+import com.webobjects.eoaccess.EORelationship;
 import com.webobjects.eoaccess.EOUtilities;
 import com.webobjects.eocontrol.EOEditingContext;
 import com.webobjects.eocontrol.EOEnterpriseObject;
@@ -110,7 +111,19 @@ public class RuleModelController extends ERXRouteController {
             d2wContext.setPropertyKey(propertyKey);
 
         Object result = null;
-        if (key.equals("displayNameForKeyWhenRelationship")) {
+        if (key.equals("attributeType")) {
+            EOAttribute attr = entity.attributeNamed(propertyKey);
+            if (attr == null) {
+                EORelationship relationship = entity.relationshipNamed(propertyKey);
+                result = relationship.isToMany() ? "eosV" : "eoV";
+
+            } else {
+                String valueType = attr.valueType();
+                System.out.println("valueType" + valueType);
+                result = valueType.equals("c") ? "stringV" : "intV"; // i for
+                                                                     // int
+            }
+        } else if (key.equals("displayNameForKeyWhenRelationship")) {
             result = getDisplayNameForKeyWhenRelationshipWith(d2wContext);
         } else if (key.equals("destinationEos")) {
             NSArray eoRefs = eoRefs(d2wContext);
