@@ -35,7 +35,7 @@ public class RuleModelController extends ERXRouteController {
 
     public static ERXKeyFilter showEORefsFilter() {
         ERXKeyFilter filter = ERXKeyFilter.filterWithNone();
-        filter.include("destinationEos").include("id");
+        filter.include("destinationEos").include("id"); // hardcoded to id ??
         filter.include("destinationEos").include("entity");
         filter.include("destinationEos").include("displayName");
         filter.include("destinationEos").include("pkAttributeName");
@@ -96,6 +96,7 @@ public class RuleModelController extends ERXRouteController {
         return result;
     }
 
+
     public WOActionResults fireRuleForKeyAction() {
         String entityName = (String) request().formValueForKey("entity");
         String task = (String) request().formValueForKey("task");
@@ -121,7 +122,7 @@ public class RuleModelController extends ERXRouteController {
                 String valueType = attr.valueType();
                 System.out.println("valueType" + valueType);
                 result = valueType.equals("c") ? "stringV" : "intV"; // i for
-                                                                     // int
+                // int
             }
         } else if (key.equals("displayNameForKeyWhenRelationship")) {
             result = getDisplayNameForKeyWhenRelationshipWith(d2wContext);
