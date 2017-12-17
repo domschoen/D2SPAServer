@@ -1,5 +1,8 @@
 package your.app.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
@@ -27,6 +30,7 @@ case class Menu(id:Int, title: String, entity: String)
 case class D2WContext(entity: String, task: String, propertyKey: String)
  */
 public class RuleModelController extends ERXRouteController {
+	private static final Logger log = LoggerFactory.getLogger(RuleModelController.class);
 
 
     public RuleModelController(WORequest request) {
