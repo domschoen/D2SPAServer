@@ -1,72 +1,76 @@
 package your.app.model;
 
+import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 
 public class Menu {
-	private static NSMutableArray<Menu> _menus;
+    private static NSMutableArray<Menu> _menus;
 
-	
-	public static NSArray<Menu> menus() {
-		if (_menus == null) {
-			NSMutableArray<Menu> menus = new NSMutableArray<>();
-			Menu mainMenu = new Menu(null,"Project Management",null, 0);
-			
-			menus.addObject(mainMenu);
-			
-			menus.addObject(new Menu(mainMenu, _Customer.ENTITY_NAME, _Customer.ENTITY_NAME, 1));
-			menus.addObject(new Menu(mainMenu, _Project.ENTITY_NAME, _Project.ENTITY_NAME, 2));
-			_menus = menus;
-		}
-		return _menus;
-	}
-	
-	private String _title;
-	private String _entity;
-	private Integer _id;
-	private Menu _parent;
+    public static NSArray<Menu> menus() {
+        if (_menus == null) {
+            NSMutableArray<Menu> menus = new NSMutableArray<>();
+            Menu mainMenu = new Menu(null,"Project Management",null, 0);
 
-	public Menu() {
-	}
+            menus.addObject(mainMenu);
 
-	public Menu(Menu parent, String title, String entity, Integer id) {
-		setId(id);
-		setTitle(title);
-		setEntity(entity);
-		setParent(parent);
-	}
+            EOEntity customerEntity = EOAccessMetaDataUtilities.entityNamed(_Customer.ENTITY_NAME);
+            EOEntity projectEntity = EOAccessMetaDataUtilities.entityNamed(_Project.ENTITY_NAME);
 
-	public void setTitle(String title) {
-		_title = title;
-	}
+            menus.addObject(new Menu(mainMenu, "Customer", new EntityDef(customerEntity.name(), EOAccessMetaDataUtilities.pkAttributeName(customerEntity)), 1));
+            menus.addObject(new Menu(mainMenu, "Project", new EntityDef(projectEntity.name(), EOAccessMetaDataUtilities.pkAttributeName(projectEntity)), 2));
+            _menus = menus;
+        }
+        return _menus;
+    }
 
-	public String getTitle() {
-		return _title;
-	}
-	
-	public String getEntity() {
-		return _entity;
-	}
-	public void setEntity(String entity) {
-		_entity = entity;
-	}
+    private String _title;
+    private EntityDef _entity;
+    private Integer _id;
+    private Menu _parent;
 
-	public void setId(Integer id) {
-		_id = id;
-	}
+    public Menu() {
+    }
 
-	public Integer getId() {
-		return _id;
-	}
+    public Menu(Menu parent, String title, EntityDef entity, Integer id) {
+        setId(id);
+        setTitle(title);
+        setEntity(entity);
+        setParent(parent);
+    }
 
-	
-	public void setParent(Menu parent) {
-		_parent = parent;
-	}
+    public void setTitle(String title) {
+        _title = title;
+    }
 
-	public Menu getParent() {
-		return _parent;
-	}
+    public String getTitle() {
+        return _title;
+    }
 
-	
+    public EntityDef getEntity() {
+        return _entity;
+    }
+
+    public void setEntity(EntityDef entity) {
+        _entity = entity;
+    }
+
+    public void setId(Integer id) {
+        _id = id;
+    }
+
+    public Integer getId() {
+        return _id;
+    }
+
+
+    public void setParent(Menu parent) {
+        _parent = parent;
+    }
+
+    public Menu getParent() {
+        return _parent;
+    }
+
+
 }

@@ -3,6 +3,8 @@ package your.app.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import your.app.model.EOAccessMetaDataUtilities;
+
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
 import com.webobjects.appserver.WOResponse;
@@ -30,7 +32,7 @@ case class Menu(id:Int, title: String, entity: String)
 case class D2WContext(entity: String, task: String, propertyKey: String)
  */
 public class RuleModelController extends ERXRouteController {
-	private static final Logger log = LoggerFactory.getLogger(RuleModelController.class);
+    private static final Logger log = LoggerFactory.getLogger(RuleModelController.class);
 
 
     public RuleModelController(WORequest request) {
@@ -40,7 +42,8 @@ public class RuleModelController extends ERXRouteController {
     public static ERXKeyFilter showEORefsFilter() {
         ERXKeyFilter filter = ERXKeyFilter.filterWithNone();
         filter.include("destinationEos").include("id"); // hardcoded to id ??
-        filter.include("destinationEos").include("entity");
+        filter.include("destinationEos").include("entity").include("name");
+        filter.include("destinationEos").include("entity").include("pkAttributeName");
         filter.include("destinationEos").include("displayName");
         filter.include("destinationEos").include("pkAttributeName");
         return filter;
@@ -116,7 +119,10 @@ public class RuleModelController extends ERXRouteController {
             d2wContext.setPropertyKey(propertyKey);
 
         Object result = null;
-        if (key.equals("attributeType")) {
+        if (key.equals("pkAttributeName")) {
+            result = EOAccessMetaDataUtilities.pkAttributeName(entity);
+
+        } else if (key.equals("attributeType")) {
             EOAttribute attr = entity.attributeNamed(propertyKey);
             if (attr == null) {
                 EORelationship relationship = entity.relationshipNamed(propertyKey);
