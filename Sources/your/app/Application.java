@@ -9,9 +9,9 @@ import com.webobjects.foundation.NSDictionary;
 
 import er.extensions.appserver.ERXApplication;
 import er.extensions.appserver.navigation.ERXNavigationManager;
+import er.rest.routes.D2SPAController;
 import er.rest.routes.ERXRoute;
 import er.rest.routes.ERXRouteRequestHandler;
-import er.rest.routes.ERXUnsafeReadWriteRouteController;
 
 public class Application extends ERXApplication {
     public static void main(String[] argv) {
@@ -41,7 +41,8 @@ public class Application extends ERXApplication {
         for (EOModel eachModel : EOModelGroup.defaultGroup().models()) {
             for (EOEntity eachEntity : eachModel.entities()) {
                 System.out.println(eachEntity.name());
-                routeRequestHandler.addDefaultRoutes(eachEntity.name(), ERXUnsafeReadWriteRouteController.class);
+                routeRequestHandler.addDefaultRoutes(eachEntity.name(), D2SPAController.class);
+                routeRequestHandler.addRoute(new ERXRoute(eachEntity.name(), "/propertyValues", ERXRoute.Method.Get, D2SPAController.class, "propertyValues"));
 
             }
         }

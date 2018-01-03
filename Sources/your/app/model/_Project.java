@@ -83,13 +83,10 @@ public abstract class _Project extends  ERXGenericRecord {
   }
 
 
-  public static Project createProject(EOEditingContext editingContext, String descr
-, Integer projectNumber
-, your.app.model.Customer customer) {
+  public static Project createProject(EOEditingContext editingContext, Integer projectNumber
+) {
     Project eo = (Project) EOUtilities.createAndInsertInstance(editingContext, _Project.ENTITY_NAME);
-    eo.setDescr(descr);
     eo.setProjectNumber(projectNumber);
-    eo.setCustomerRelationship(customer);
     return eo;
   }
 
