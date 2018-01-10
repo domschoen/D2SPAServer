@@ -1,13 +1,10 @@
 package your.app.controller;
 
+import your.app.model.PubEOModel;
+
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
-import com.webobjects.eoaccess.EOEntity;
-import com.webobjects.eoaccess.EOModel;
-import com.webobjects.eoaccess.EOModelGroup;
-import com.webobjects.foundation.NSMutableArray;
 
-import er.extensions.eof.ERXKey;
 import er.extensions.eof.ERXKeyFilter;
 import er.rest.routes.ERXRouteController;
 
@@ -18,25 +15,21 @@ public class EOModelController extends ERXRouteController {
     }
 
     public static ERXKeyFilter showFilter() {
-        ERXKeyFilter filter = ERXKeyFilter.filterWithAttributes();
-        filter.include(new ERXKey<EOEntity>("entities"));
-        filter.include("entities").include("name");
-        filter.include("entities").include("primaryKeyAttributeNames");
+        ERXKeyFilter eoModelfilter = ERXKeyFilter.filterWithNone();
+        ERXKeyFilter eoEntityfilter = eoModelfilter.include("entities");
+        ERXKeyFilter eoRelationshipfilter = eoEntityfilter.include("relationships");
 
-        return filter;
+        eoEntityfilter.include("name");
+        eoEntityfilter.include("primaryKeyAttributeNames");
+
+        eoRelationshipfilter.include("name");
+        eoRelationshipfilter.include("destinationEntityName");
+
+        return eoModelfilter;
     }
 
     public WOActionResults indexAction() throws Throwable {
-        if (isSchemaRequest()) {
-            return schemaResponse(showFilter());
-        }
-        NSMutableArray<EOModel> filteredModels = new NSMutableArray<EOModel>();
-        for (EOModel model : EOModelGroup.defaultGroup().models()) {
-            if (!model.name().equals("erprototypes")) {
-                filteredModels.addObject(model);
-            }
-        }
-        return response(filteredModels, showFilter());
+        return response(PubEOModel.eomodels(), showFilter());
     }
 
 }

@@ -43,9 +43,6 @@ public class RuleModelController extends ERXRouteController {
         ERXKeyFilter filter = ERXKeyFilter.filterWithNone();
         filter.include("destinationEos").include("id"); // hardcoded to id ??
         filter.include("destinationEos").include("entity").include("name");
-        filter.include("destinationEos").include("entity").include("pkAttributeName");
-        filter.include("destinationEos").include("displayName");
-        filter.include("destinationEos").include("pkAttributeName");
         return filter;
     }
 
@@ -82,8 +79,7 @@ public class RuleModelController extends ERXRouteController {
         return destinationD2wContext.displayNameForProperty();
     }
 
-    String[] eoRefKeys = new String[] { "id", "displayName", "entity",
-    "pkAttributeName" };
+    String[] eoRefKeys = new String[] { "id", "entity" };
 
     private NSArray<NSDictionary<String, Object>> eoRefs(D2WContext d2wContext)
     {
@@ -97,8 +93,7 @@ public class RuleModelController extends ERXRouteController {
             Object oid = oidForEo(eo);
             String displayName = (String) eo.valueForKeyPath(keyWhenRelationship);
             result.addObject(new NSDictionary(new Object[] { oid,
-                    displayName,
-                    destinationEntityName, pkAttribute.name() }, eoRefKeys));
+                    destinationEntityName }, eoRefKeys));
         }
         return result;
     }
