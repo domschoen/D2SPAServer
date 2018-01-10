@@ -34,7 +34,10 @@ public class Application extends ERXApplication {
         ERXRouteRequestHandler routeRequestHandler = new ERXRouteRequestHandler(ERXRouteRequestHandler.WO);
 
         routeRequestHandler.addDefaultRoutes("Menu");
+        routeRequestHandler.addDefaultRoutes("EOModel");
         routeRequestHandler.addRoute(new ERXRoute("RuleFiring", "/fireRuleForKey", ERXRoute.Method.Get, RuleModelController.class, "fireRuleForKey"));
+        // routeRequestHandler.addRoute(new ERXRoute("EOModel", "/eomodel",
+        // ERXRoute.Method.Get, EOModelController.class, "eomodel"));
 
 
         // Generic web service for each entity !
