@@ -46,8 +46,9 @@ public class RuleModelController extends ERXRouteController {
         return filter;
     }
 
-    public static ERXKeyFilter showFilter() {
-        ERXKeyFilter filter = ERXKeyFilter.filterWithAttributes();
+    public static ERXKeyFilter showFilter(String key) {
+        ERXKeyFilter filter = ERXKeyFilter.filterWithNone();
+        filter.include(key);
         return filter;
     }
 
@@ -108,8 +109,9 @@ public class RuleModelController extends ERXRouteController {
 
         D2WContext d2wContext = new D2WContext();
 
-        d2wContext.setEntity(entity);
-        d2wContext.setTask(task);
+        d2wContext.setEntity(entity);       
+        if (task != null)
+        	d2wContext.setTask(task);
         if (propertyKey != null)
             d2wContext.setPropertyKey(propertyKey);
 
@@ -142,18 +144,17 @@ public class RuleModelController extends ERXRouteController {
             result = d2wContext.inferValueForKey(key);
         }
 
-        if (result instanceof String) {
-            System.out.println("D2WContext : "
-                    + d2wContext
-                    + "  key: "
-                    + key
-                    + " value: "
-                    + result);
-            result = new NSDictionary(result, key);
-        }
+        System.out.println("D2WContext : "
+        		+ d2wContext
+        		+ "  key: "
+        		+ key
+        		+ " value: "
+        		+ result);
+        result = new NSDictionary(result, key);
+
         System.out.println("Result " + result);
 
-        return response(result, showFilter());
+        return response(result, showFilter(key));
     }
 
     public WOActionResults successResponse(final String responseMessage) {
