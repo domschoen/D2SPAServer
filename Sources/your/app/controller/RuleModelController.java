@@ -109,9 +109,9 @@ public class RuleModelController extends ERXRouteController {
 
         D2WContext d2wContext = new D2WContext();
 
-        d2wContext.setEntity(entity);       
+        d2wContext.setEntity(entity);
         if (task != null)
-        	d2wContext.setTask(task);
+            d2wContext.setTask(task);
         if (propertyKey != null)
             d2wContext.setPropertyKey(propertyKey);
 
@@ -123,7 +123,11 @@ public class RuleModelController extends ERXRouteController {
             EOAttribute attr = entity.attributeNamed(propertyKey);
             if (attr == null) {
                 EORelationship relationship = entity.relationshipNamed(propertyKey);
-                result = relationship.isToMany() ? "eosV" : "eoV";
+                if (relationship == null) {
+                    result = new NSDictionary();
+                } else {
+                    result = relationship.isToMany() ? "eosV" : "eoV";
+                }
 
             } else {
                 String valueType = attr.valueType();
@@ -145,11 +149,11 @@ public class RuleModelController extends ERXRouteController {
         }
 
         System.out.println("D2WContext : "
-        		+ d2wContext
-        		+ "  key: "
-        		+ key
-        		+ " value: "
-        		+ result);
+                + d2wContext
+                + "  key: "
+                + key
+                + " value: "
+                + result);
         result = new NSDictionary(result, key);
 
         System.out.println("Result " + result);
