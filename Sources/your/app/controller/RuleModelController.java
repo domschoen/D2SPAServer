@@ -132,7 +132,8 @@ public class RuleModelController extends ERXRouteController {
             } else {
                 String valueType = attr.valueType();
                 System.out.println("valueType" + valueType);
-                result = valueType.equals("c") ? "stringV" : "intV"; // i for
+				result = valueType == null || valueType.equals("c") ? "stringV" : "intV"; // i
+																							// for
                 // int
             }
         } else if (key.equals("displayNameForKeyWhenRelationship")) {
@@ -148,6 +149,9 @@ public class RuleModelController extends ERXRouteController {
             result = d2wContext.inferValueForKey(key);
         }
 
+		if (result instanceof EOEntity) {
+			result = ((EOEntity) result).name();
+		}
         System.out.println("D2WContext : "
                 + d2wContext
                 + "  key: "

@@ -13,7 +13,7 @@ public class PubEORelationship {
         NSMutableArray<PubEORelationship> result = new NSMutableArray<PubEORelationship>();
         for (EORelationship relationship : entity.relationships()) {
 
-            result.addObject(new PubEORelationship(relationship.name(), relationship.destinationEntity().name()));
+			result.addObject(new PubEORelationship(PubEOAttribute.pubEOAttributeWithRelationship(relationship), relationship.name(), relationship.destinationEntity().name()));
         }
         return result;
     }
@@ -29,12 +29,14 @@ public class PubEORelationship {
 
     private String _name;
     private String _destinationEntityName;
+	private NSArray<PubEOAttribute> _sourceAttributes;
 
     public PubEORelationship() {
     }
 
-    public PubEORelationship(String name, String destinationEntityName)
+	public PubEORelationship(NSArray<PubEOAttribute> sourceAttributes, String name, String destinationEntityName)
     {
+		setSourceAttributes(sourceAttributes);
         setName(name);
         setDestinationEntityName(destinationEntityName);
     }
@@ -54,6 +56,13 @@ public class PubEORelationship {
     public String getDestinationEntityName() {
         return _destinationEntityName;
     }
+	public void setSourceAttributes(NSArray<PubEOAttribute> sourceAttributes) {
+		_sourceAttributes = sourceAttributes;
+	}
+
+	public NSArray<PubEOAttribute> getSourceAttributes() {
+		return _sourceAttributes;
+	}
 
 
 }

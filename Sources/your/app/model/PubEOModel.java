@@ -12,9 +12,12 @@ public class PubEOModel {
         if (_eomodels == null) {
             NSMutableArray<PubEOModel> eomodels = new NSMutableArray<PubEOModel>();
             for (EOModel model : EOModelGroup.defaultGroup().models()) {
+
                 String name = model.name();
+				System.out.println("Create description for eomodel " + name);
+
                 if (!name.equals("erprototypes")) {
-                    eomodels.addObject(new PubEOModel(name, PubEOEntity.pubEOEntitiesWithModel(model)));
+					eomodels.addObject(new PubEOModel(name, PubEOEntity.pubEOEntitiesWithModel(model)));
                 }
             }
 

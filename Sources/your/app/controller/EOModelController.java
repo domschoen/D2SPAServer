@@ -22,6 +22,9 @@ public class EOModelController extends ERXRouteController {
         eoEntityfilter.include("name");
         eoEntityfilter.include("primaryKeyAttributeNames");
 
+		ERXKeyFilter sourceAttributesFilter = eoRelationshipfilter.include("sourceAttributes");
+
+		sourceAttributesFilter.include("name");
         eoRelationshipfilter.include("name");
         eoRelationshipfilter.include("destinationEntityName");
 
