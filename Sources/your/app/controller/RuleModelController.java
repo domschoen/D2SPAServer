@@ -131,7 +131,7 @@ public class RuleModelController extends ERXRouteController {
 
             } else {
                 String valueType = attr.valueType();
-                System.out.println("valueType" + valueType);
+                //System.out.println("valueType" + valueType);
 				result = valueType == null || valueType.equals("c") ? "stringV" : "intV"; // i
 																							// for
                 // int
@@ -142,7 +142,7 @@ public class RuleModelController extends ERXRouteController {
             NSArray eoRefs = eoRefs(d2wContext);
             result = new NSDictionary(eoRefs, key);
 
-            System.out.println("DESTINATION EOS" + result);
+            //System.out.println("DESTINATION EOS" + result);
             return response(result, showEORefsFilter());
 
         } else {
@@ -152,15 +152,15 @@ public class RuleModelController extends ERXRouteController {
 		if (result instanceof EOEntity) {
 			result = ((EOEntity) result).name();
 		}
-        System.out.println("D2WContext : "
+        /*System.out.println("D2WContext : "
                 + d2wContext
                 + "  key: "
                 + key
                 + " value: "
-                + result);
+                + result);*/
         result = new NSDictionary(result, key);
 
-        System.out.println("Result " + result);
+        //System.out.println("Result " + result);
 
         return response(result, showFilter(key));
     }
