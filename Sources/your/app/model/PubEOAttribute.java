@@ -1,12 +1,22 @@
 package your.app.model;
 
 import com.webobjects.eoaccess.EOAttribute;
+import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EORelationship;
 import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSMutableArray;
 
 public class PubEOAttribute {
 
+	
+	public static NSArray<PubEOAttribute> attributesWithEntity(EOEntity entity) {
+        NSMutableArray<PubEOAttribute> result = new NSMutableArray<PubEOAttribute>();
+        for (EOAttribute attribute : entity.attributes()) {
+			result.addObject(new PubEOAttribute(attribute.name()));
+        }
+        return result;
+    }
+	
 	public static NSArray<PubEOAttribute> pubEOAttributeWithRelationship(EORelationship relationship) {
         NSMutableArray<PubEOAttribute> result = new NSMutableArray<PubEOAttribute>();
         for (EOAttribute sourceAttribute : relationship.sourceAttributes()) {

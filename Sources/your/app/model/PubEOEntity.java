@@ -11,22 +11,26 @@ public class PubEOEntity {
         NSMutableArray<PubEOEntity> result = new NSMutableArray<PubEOEntity>();
         for (EOEntity entity : model.entities()) {
 
-            result.addObject(new PubEOEntity(entity.name(), PubEORelationship.relationshipsWithEntity(entity), entity.primaryKeyAttributeNames()));
+            result.addObject(new PubEOEntity(entity.name(), entity.primaryKeyAttributeNames(), 
+            		PubEOAttribute.attributesWithEntity(entity), 
+            		PubEORelationship.relationshipsWithEntity(entity)));
         }
         return result;
     }
 
     private String _name;
     private NSArray<PubEORelationship> _relationships;
+    private NSArray<PubEOAttribute> _attributes;
     private NSArray<String> _primaryKeyAttributeNames;
 
     public PubEOEntity() {
     }
 
-    public PubEOEntity(String name, NSArray<PubEORelationship> relationships, NSArray<String> primaryKeyAttributeNames)
+    public PubEOEntity(String name,  NSArray<String> primaryKeyAttributeNames, NSArray<PubEOAttribute> attributes, NSArray<PubEORelationship> relationships)
     {
         setName(name);
         setRelationships(relationships);
+        setAttributes(attributes);
         setPrimaryKeyAttributeNames(primaryKeyAttributeNames);
     }
 
@@ -38,6 +42,13 @@ public class PubEOEntity {
         return _name;
     }
 
+    public void setAttributes(NSArray<PubEOAttribute> attributes) {
+    	_attributes = attributes;
+    }
+
+    public NSArray<PubEOAttribute> getAttributes() {
+        return _attributes;
+    }
     public void setRelationships(NSArray<PubEORelationship> relationships) {
         _relationships = relationships;
     }

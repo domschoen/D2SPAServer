@@ -22,7 +22,8 @@ public class PubEORelationship {
         NSMutableArray<PubEOEntity> result = new NSMutableArray<PubEOEntity>();
         for (EOEntity entity : model.entities()) {
 
-            result.addObject(new PubEOEntity(entity.name(), PubEORelationship.relationshipsWithEntity(entity), entity.primaryKeyAttributeNames()));
+            result.addObject(new PubEOEntity(entity.name(), entity.primaryKeyAttributeNames(), PubEOAttribute.attributesWithEntity(entity), 
+            		PubEORelationship.relationshipsWithEntity(entity)));
         }
         return result;
     }
