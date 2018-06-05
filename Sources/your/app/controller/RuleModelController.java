@@ -21,6 +21,7 @@ import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 
 import er.extensions.eof.ERXKeyFilter;
+import er.extensions.foundation.ERXStringUtilities;
 import er.rest.routes.ERXRouteController;
 
 /*
@@ -105,6 +106,7 @@ public class RuleModelController extends ERXRouteController {
         String task = (String) request().formValueForKey("task");
         String propertyKey = (String) request().formValueForKey("propertyKey");
         String key = (String) request().formValueForKey("key");
+		String pageConfiguration = (String) request().formValueForKey("pageConfiguration");
         EOEntity entity = EOModelGroup.defaultGroup().entityNamed(entityName);
 
         D2WContext d2wContext = new D2WContext();
@@ -114,6 +116,8 @@ public class RuleModelController extends ERXRouteController {
             d2wContext.setTask(task);
         if (propertyKey != null)
             d2wContext.setPropertyKey(propertyKey);
+		if (pageConfiguration != null)
+			d2wContext.takeValueForKey(pageConfiguration, "pageConfiguration");
 
         Object result = null;
         if (key.equals("pkAttributeName")) {
@@ -151,6 +155,12 @@ public class RuleModelController extends ERXRouteController {
 
 		if (result instanceof EOEntity) {
 			result = ((EOEntity) result).name();
+		} else if (key.equals("isEditAllowed")) {
+			if (result == null)
+				result = "false";
+		} else if (key.equals("displayNameForProperty")) {
+			if (result == null)
+				result = ERXStringUtilities.displayNameForKey(propertyKey);
 		}
         /*System.out.println("D2WContext : "
                 + d2wContext

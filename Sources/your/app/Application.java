@@ -2,6 +2,8 @@ package your.app;
 
 import your.app.controller.RuleModelController;
 
+import com.webobjects.appserver.WORequest;
+import com.webobjects.appserver.WOResponse;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
@@ -29,6 +31,14 @@ public class Application extends ERXApplication {
         setupGenericWebServices();
 
     }
+
+	@Override
+	public WOResponse dispatchRequest(WORequest request) {
+		String method = request.valueForKey("method").toString();
+		String formsValues = method.equals("POST") ? request.valueForKey("formValues").toString() : "";
+		System.out.println(method + " " + request.valueForKey("uri") + " " + formsValues);
+		return super.dispatchRequest(request);
+	}
 
     private void setupGenericWebServices() {
         ERXRouteRequestHandler routeRequestHandler = new ERXRouteRequestHandler(ERXRouteRequestHandler.WO);
