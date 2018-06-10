@@ -8,16 +8,17 @@ import com.webobjects.foundation.NSMutableArray;
 public class PubEOModel {
     private static NSMutableArray<PubEOModel> _eomodels;
 
-    public static NSArray<PubEOModel> eomodels() {
+
+	public static NSArray<PubEOModel> eomodels(NSArray<String> allowedEntities) {
         if (_eomodels == null) {
             NSMutableArray<PubEOModel> eomodels = new NSMutableArray<PubEOModel>();
             for (EOModel model : EOModelGroup.defaultGroup().models()) {
-
                 String name = model.name();
-				System.out.println("Create description for eomodel " + name);
-
                 if (!name.equals("erprototypes")) {
-					eomodels.addObject(new PubEOModel(name, PubEOEntity.pubEOEntitiesWithModel(model)));
+					PubEOModel pubModel = new PubEOModel(name, PubEOEntity.pubEOEntitiesWithModel(model, allowedEntities));
+					if (pubModel != null) {
+						eomodels.addObject(pubModel);
+					}
                 }
             }
 

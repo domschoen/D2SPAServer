@@ -1,5 +1,6 @@
 package your.app.controller;
 
+import your.app.Application;
 import your.app.model.PubEOModel;
 
 import com.webobjects.appserver.WOActionResults;
@@ -28,14 +29,14 @@ public class EOModelController extends ERXRouteController {
 		sourceAttributesFilter.include("name");
         eoRelationshipfilter.include("name");
         eoRelationshipfilter.include("destinationEntityName");
-        
+
         eoAttributefilter.include("name");
 
         return eoModelfilter;
     }
 
     public WOActionResults indexAction() throws Throwable {
-        return response(PubEOModel.eomodels(), showFilter());
+		return response(PubEOModel.eomodels(Application.allowedEntities), showFilter());
     }
 
 }

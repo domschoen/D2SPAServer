@@ -161,6 +161,9 @@ public class RuleModelController extends ERXRouteController {
 		} else if (key.equals("displayNameForProperty")) {
 			if (result == null)
 				result = ERXStringUtilities.displayNameForKey(propertyKey);
+		} else if (key.equals("isInspectAllowed")) {
+			if (result == null)
+				result = "true";
 		}
         /*System.out.println("D2WContext : "
                 + d2wContext

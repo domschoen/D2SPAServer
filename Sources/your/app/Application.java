@@ -7,6 +7,7 @@ import com.webobjects.appserver.WOResponse;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EOModelGroup;
+import com.webobjects.foundation.NSArray;
 import com.webobjects.foundation.NSDictionary;
 
 import er.extensions.appserver.ERXApplication;
@@ -16,6 +17,8 @@ import er.rest.routes.ERXRoute;
 import er.rest.routes.ERXRouteRequestHandler;
 
 public class Application extends ERXApplication {
+	public static final NSArray<String> allowedEntities = null;
+	
     public static void main(String[] argv) {
         ERXApplication.main(argv, Application.class);
     }

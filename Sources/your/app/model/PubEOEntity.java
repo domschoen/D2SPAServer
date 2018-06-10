@@ -7,11 +7,12 @@ import com.webobjects.foundation.NSMutableArray;
 
 public class PubEOEntity {
 
-    public static NSArray<PubEOEntity> pubEOEntitiesWithModel(EOModel model) {
+
+	public static NSArray<PubEOEntity> pubEOEntitiesWithModel(EOModel model, NSArray<String> allowedEntities) {
         NSMutableArray<PubEOEntity> result = new NSMutableArray<PubEOEntity>();
 		for (EOEntity entity : model.entities()) {
 
-			if (isEntityAllowed(model, entity)) {
+			if (allowedEntities == null || allowedEntities.contains(entity.name())) {
 				result.addObject(new PubEOEntity(entity.name(), entity.primaryKeyAttributeNames(), PubEOAttribute.attributesWithEntity(entity), PubEORelationship.relationshipsWithEntity(entity)));
 			}
         }
