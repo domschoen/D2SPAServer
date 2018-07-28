@@ -151,6 +151,7 @@ public class RuleModelController extends ERXRouteController {
 
         } else {
             result = d2wContext.inferValueForKey(key);
+			// System.out.println("result " + result);
         }
 
 		if (result instanceof EOEntity) {
@@ -161,9 +162,17 @@ public class RuleModelController extends ERXRouteController {
 		} else if (key.equals("displayNameForProperty")) {
 			if (result == null)
 				result = ERXStringUtilities.displayNameForKey(propertyKey);
+		} else if (key.equals("displayNameForEntity")) {
+			if (result == null)
+				result = ERXStringUtilities.displayNameForKey(entityName);
 		} else if (key.equals("isInspectAllowed")) {
 			if (result == null)
 				result = "true";
+		} else if (key.equals("displayPropertyKeys")) {
+			if (!(result instanceof NSArray)) {
+				log.error("displayPropertyKeys should return an array");
+			}
+
 		}
         /*System.out.println("D2WContext : "
                 + d2wContext
