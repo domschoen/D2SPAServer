@@ -22,6 +22,7 @@ import com.webobjects.foundation.NSMutableArray;
 
 import er.extensions.eof.ERXKeyFilter;
 import er.extensions.foundation.ERXStringUtilities;
+import er.extensions.foundation.ERXValueUtilities;
 import er.rest.routes.ERXRouteController;
 
 /*
@@ -157,8 +158,7 @@ public class RuleModelController extends ERXRouteController {
 		if (result instanceof EOEntity) {
 			result = ((EOEntity) result).name();
 		} else if (key.equals("isEditAllowed")) {
-			if (result == null)
-				result = "false";
+			result = ERXValueUtilities.booleanValueWithDefault(result, false);
 		} else if (key.equals("displayNameForProperty")) {
 			if (result == null)
 				result = ERXStringUtilities.displayNameForKey(propertyKey);
@@ -166,8 +166,7 @@ public class RuleModelController extends ERXRouteController {
 			if (result == null)
 				result = ERXStringUtilities.displayNameForKey(entityName);
 		} else if (key.equals("isInspectAllowed")) {
-			if (result == null)
-				result = "true";
+			result = ERXValueUtilities.booleanValueWithDefault(result, true);
 		} else if (key.equals("displayPropertyKeys")) {
 			if (!(result instanceof NSArray)) {
 				log.error("displayPropertyKeys should return an array");
