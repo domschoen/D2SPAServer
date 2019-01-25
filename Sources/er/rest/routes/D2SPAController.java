@@ -2,9 +2,14 @@ package er.rest.routes;
 
 import com.webobjects.appserver.WOActionResults;
 import com.webobjects.appserver.WORequest;
+import com.webobjects.eoaccess.EOEntity;
+import com.webobjects.eoaccess.EOModelGroup;
+import com.webobjects.eoaccess.EOProperty;
 import com.webobjects.eocontrol.EOEnterpriseObject;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSMutableSet;
 import com.webobjects.foundation.NSPropertyListSerialization;
+import com.webobjects.foundation.NSSet;
 
 import er.extensions.eof.ERXKeyFilter;
 import er.rest.ERXRestFetchSpecification;
@@ -49,21 +54,35 @@ public class D2SPAController extends ERXUnsafeReadWriteRouteController{
         return response(obj, missingKeysFilter(missingKeys));
     }
 
+	public NSArray<String> purifyMissingKeys(NSArray<String> missingKeys, String entityName) {
+		EOEntity entity = EOModelGroup.defaultGroup().entityNamed(entityName());
+		NSMutableSet<String> classPropertyNames = new NSMutableSet<String>();
+		for (EOProperty property : entity.classProperties()) {
+			classPropertyNames.addObject(property.name());
+		}
+		NSSet<String> impureKeys = new NSSet(missingKeys);
+		NSSet<String> purifiedKeys = impureKeys.setByIntersectingSet(classPropertyNames);
+		return purifiedKeys.allObjects();
+	}
+
 	@Override
 	public WOActionResults indexAction() {
 		if (isSchemaRequest()) {
 			return schemaResponse(showFilter());
 		}
         String missingKeysString = (String)request().formValueForKey("missingKeys");
-		if (missingKeysString == null) {
+		NSArray<String> purestKeys = null;
+		if (missingKeysString != null) {
+			NSArray<String> missingKeys = NSPropertyListSerialization.arrayForString(missingKeysString);
+			NSArray<String> pureKeys = purifyMissingKeys(missingKeys, entityName());
+			purestKeys = pureKeys.count() > 0 ? pureKeys : null;
+		}
+
+		if (purestKeys == null) {
 			return super.indexAction();
 		} else {
-
-			NSArray<String> missingKeys = NSPropertyListSerialization.arrayForString(missingKeysString);
-
-
 			ERXRestFetchSpecification fetchSpec = new ERXRestFetchSpecification(entityName(), null, null, queryFilter(), null, 1500);
-			return response(fetchSpec, fatMissingKeysFilter(missingKeys));
+			return response(fetchSpec, fatMissingKeysFilter(purestKeys));
 		}
 	}
 
