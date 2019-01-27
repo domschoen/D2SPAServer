@@ -1,0 +1,41 @@
+{
+    attributes = (
+        {
+            allowsNull = N; 
+            columnName = customerID; 
+            name = customerID; 
+            prototypeName = id; 
+        }, 
+        {
+            allowsNull = N; 
+            columnName = productID; 
+            name = productID; 
+            prototypeName = id; 
+        }
+    ); 
+    attributesUsedForLocking = (customerID, productID); 
+    className = "your.app.model.CustomerProduct"; 
+    classProperties = (customer, product); 
+    externalName = CustomerProduct; 
+    fetchSpecificationDictionary = {}; 
+    name = CustomerProduct; 
+    primaryKeyAttributes = (customerID, productID); 
+    relationships = (
+        {
+            destination = Customer; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = customerID; }); 
+            name = customer; 
+        }, 
+        {
+            destination = Product; 
+            isMandatory = Y; 
+            isToMany = N; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = id; sourceAttribute = productID; }); 
+            name = product; 
+        }
+    ); 
+}

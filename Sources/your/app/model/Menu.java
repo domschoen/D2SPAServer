@@ -16,9 +16,11 @@ public class Menu {
 
             EOEntity customerEntity = EOAccessMetaDataUtilities.entityNamed(_Customer.ENTITY_NAME);
             EOEntity projectEntity = EOAccessMetaDataUtilities.entityNamed(_Project.ENTITY_NAME);
+            EOEntity productEntity = EOAccessMetaDataUtilities.entityNamed(_Product.ENTITY_NAME);
 
             menus.addObject(new Menu(mainMenu, "Customer", new EntityDef(customerEntity.name(), EOAccessMetaDataUtilities.pkAttributeName(customerEntity)), 1));
             menus.addObject(new Menu(mainMenu, "Project", new EntityDef(projectEntity.name(), EOAccessMetaDataUtilities.pkAttributeName(projectEntity)), 2));
+            menus.addObject(new Menu(mainMenu, "Product", new EntityDef(productEntity.name(), EOAccessMetaDataUtilities.pkAttributeName(productEntity)), 3));
             _menus = menus;
         }
         return _menus;

@@ -1,0 +1,32 @@
+{
+    attributes = (
+        {
+            allowsNull = Y; 
+            columnName = descr; 
+            name = descr; 
+            prototypeName = varchar1000; 
+        }, 
+        {allowsNull = N; name = id; prototypeName = id; }, 
+        {columnName = name; name = name; prototypeName = varchar100; }, 
+        {columnName = num; name = num; prototypeName = intNumber; }
+    ); 
+    attributesUsedForLocking = (descr, id, name, num); 
+    className = "your.app.model.Product"; 
+    classProperties = (customers, descr, name, num); 
+    externalName = Product; 
+    fetchSpecificationDictionary = {}; 
+    name = Product; 
+    primaryKeyAttributes = (id); 
+    relationships = (
+        {
+            destination = CustomerProduct; 
+            isToMany = Y; 
+            joinSemantic = EOInnerJoin; 
+            joins = ({destinationAttribute = productID; sourceAttribute = id; }); 
+            name = customerProducts; 
+            ownsDestination = Y; 
+            propagatesPrimaryKey = Y; 
+        }, 
+        {definition = "customerProducts.customer"; name = customers; }
+    ); 
+}

@@ -4,6 +4,8 @@
     connectionDictionary = {}; 
     entities = (
         {className = "your.app.model.Customer"; name = Customer; }, 
+        {className = "your.app.model.CustomerProduct"; name = CustomerProduct; }, 
+        {className = "your.app.model.Product"; name = Product; }, 
         {className = "your.app.model.Project"; name = Project; }
     ); 
 }

@@ -23,6 +23,7 @@ public abstract class _Customer extends  ERXGenericRecord {
   public static final ERXKey<String> NAME = new ERXKey<String>("name");
 
   // Relationship Keys
+  public static final ERXKey<your.app.model.Product> PRODUCTS = new ERXKey<your.app.model.Product>("products");
   public static final ERXKey<your.app.model.Project> PROJECTS = new ERXKey<your.app.model.Project>("projects");
 
   // Attributes
@@ -31,6 +32,7 @@ public abstract class _Customer extends  ERXGenericRecord {
   public static final String NAME_KEY = NAME.key();
 
   // Relationships
+  public static final String PRODUCTS_KEY = PRODUCTS.key();
   public static final String PROJECTS_KEY = PROJECTS.key();
 
   private static final Logger log = LoggerFactory.getLogger(_Customer.class);
@@ -68,6 +70,72 @@ public abstract class _Customer extends  ERXGenericRecord {
   public void setName(String value) {
     log.debug( "updating name from {} to {}", name(), value);
     takeStoredValueForKey(value, _Customer.NAME_KEY);
+  }
+
+  public NSArray<your.app.model.Product> products() {
+    return (NSArray<your.app.model.Product>)storedValueForKey(_Customer.PRODUCTS_KEY);
+  }
+
+  public NSArray<your.app.model.Product> products(EOQualifier qualifier) {
+    return products(qualifier, null);
+  }
+
+  public NSArray<your.app.model.Product> products(EOQualifier qualifier, NSArray<EOSortOrdering> sortOrderings) {
+    NSArray<your.app.model.Product> results;
+      results = products();
+      if (qualifier != null) {
+        results = (NSArray<your.app.model.Product>)EOQualifier.filteredArrayWithQualifier(results, qualifier);
+      }
+      if (sortOrderings != null) {
+        results = (NSArray<your.app.model.Product>)EOSortOrdering.sortedArrayUsingKeyOrderArray(results, sortOrderings);
+      }
+    return results;
+  }
+
+  public void addToProducts(your.app.model.Product object) {
+    includeObjectIntoPropertyWithKey(object, _Customer.PRODUCTS_KEY);
+  }
+
+  public void removeFromProducts(your.app.model.Product object) {
+    excludeObjectFromPropertyWithKey(object, _Customer.PRODUCTS_KEY);
+  }
+
+  public void addToProductsRelationship(your.app.model.Product object) {
+    log.debug("adding {} to products relationship", object);
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+      addToProducts(object);
+    }
+    else {
+      addObjectToBothSidesOfRelationshipWithKey(object, _Customer.PRODUCTS_KEY);
+    }
+  }
+
+  public void removeFromProductsRelationship(your.app.model.Product object) {
+    log.debug("removing {} from products relationship", object);
+    if (er.extensions.eof.ERXGenericRecord.InverseRelationshipUpdater.updateInverseRelationships()) {
+      removeFromProducts(object);
+    }
+    else {
+      removeObjectFromBothSidesOfRelationshipWithKey(object, _Customer.PRODUCTS_KEY);
+    }
+  }
+
+  public your.app.model.Product createProductsRelationship() {
+    EOEnterpriseObject eo = EOUtilities.createAndInsertInstance(editingContext(),  your.app.model.Product.ENTITY_NAME );
+    addObjectToBothSidesOfRelationshipWithKey(eo, _Customer.PRODUCTS_KEY);
+    return (your.app.model.Product) eo;
+  }
+
+  public void deleteProductsRelationship(your.app.model.Product object) {
+    removeObjectFromBothSidesOfRelationshipWithKey(object, _Customer.PRODUCTS_KEY);
+    editingContext().deleteObject(object);
+  }
+
+  public void deleteAllProductsRelationships() {
+    Enumeration<your.app.model.Product> objects = products().immutableClone().objectEnumerator();
+    while (objects.hasMoreElements()) {
+      deleteProductsRelationship(objects.nextElement());
+    }
   }
 
   public NSArray<your.app.model.Project> projects() {
