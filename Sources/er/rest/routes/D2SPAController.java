@@ -64,7 +64,6 @@ public class D2SPAController extends ERXUnsafeReadWriteRouteController{
 		NSSet<String> purifiedKeys = impureKeys.setByIntersectingSet(classPropertyNames);
 		return purifiedKeys.allObjects();
 	}
-
 	@Override
 	public WOActionResults indexAction() {
 		if (isSchemaRequest()) {

@@ -11,6 +11,11 @@ er.extensions.ERXEC.useSharedEditingContext=false
 er.extensions.ERXEnterpriseObject.applyRestrictingQualifierOnInsert=true
 er.extensions.ERXEnterpriseObject.updateInverseRelationships=true
 
+# Discovered a but with creation of an intermediate object because EOF don't see that we don't have to generate PK because no other object are in the save scope with 
+# a relationship with propagate PK to intermediate entity to say that we should ignore it for PK generation
+er.extensions.ERXDatabaseContext.activate=true
+er.extensions.ERXDatabaseContext.className=com.webobjects.eoaccess.PatchedERXDatabaseContext
+
 # MySQL Connection Dictionary
 #dbConnectUserGLOBAL=
 #dbConnectPasswordGLOBAL=
