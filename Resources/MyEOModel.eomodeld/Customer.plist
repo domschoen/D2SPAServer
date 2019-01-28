@@ -19,6 +19,7 @@
             joinSemantic = EOInnerJoin; 
             joins = ({destinationAttribute = customerID; sourceAttribute = id; }); 
             name = customerProducts; 
+            ownsDestination = Y; 
             propagatesPrimaryKey = Y; 
         }, 
         {definition = "customerProducts.product"; name = products; }, 
