@@ -13,7 +13,7 @@ public class PubEORelationship {
         NSMutableArray<PubEORelationship> result = new NSMutableArray<PubEORelationship>();
         for (EORelationship relationship : entity.relationships()) {
 
-			result.addObject(new PubEORelationship(PubEOAttribute.pubEOAttributeWithRelationship(relationship), relationship.name(), relationship.destinationEntity().name()));
+			result.addObject(new PubEORelationship(PubEOAttribute.pubEOAttributeWithRelationship(relationship), relationship.name(), relationship.definition(), relationship.isToMany(), relationship.destinationEntity().name()));
         }
         return result;
     }
@@ -22,23 +22,28 @@ public class PubEORelationship {
         NSMutableArray<PubEOEntity> result = new NSMutableArray<PubEOEntity>();
         for (EOEntity entity : model.entities()) {
 
-            result.addObject(new PubEOEntity(entity.name(), entity.primaryKeyAttributeNames(), PubEOAttribute.attributesWithEntity(entity), 
+            result.addObject(new PubEOEntity(entity.name(), entity.primaryKeyAttributeNames(), PubEOAttribute.attributesWithEntity(entity),
             		PubEORelationship.relationshipsWithEntity(entity)));
         }
         return result;
     }
 
     private String _name;
+	private String _definition;
+	private Boolean _isToMany;
+
     private String _destinationEntityName;
 	private NSArray<PubEOAttribute> _sourceAttributes;
 
     public PubEORelationship() {
     }
 
-	public PubEORelationship(NSArray<PubEOAttribute> sourceAttributes, String name, String destinationEntityName)
+	public PubEORelationship(NSArray<PubEOAttribute> sourceAttributes, String name, String definition, Boolean isToMany, String destinationEntityName)
     {
 		setSourceAttributes(sourceAttributes);
         setName(name);
+		setDefinition(definition);
+		setIsToMany(isToMany);
         setDestinationEntityName(destinationEntityName);
     }
 
@@ -49,6 +54,22 @@ public class PubEORelationship {
     public String getName() {
         return _name;
     }
+
+	public void setIsToMany(Boolean isToMany) {
+		_isToMany = isToMany;
+	}
+
+	public Boolean getIsToMany() {
+		return _isToMany;
+	}
+
+	public void setDefinition(String name) {
+		_definition = name;
+	}
+
+	public String getDefinition() {
+		return _definition;
+	}
 
     public void setDestinationEntityName(String destinationEntityName) {
         _destinationEntityName = destinationEntityName;
