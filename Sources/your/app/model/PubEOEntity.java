@@ -3,23 +3,33 @@ package your.app.model;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModel;
 import com.webobjects.foundation.NSArray;
-import com.webobjects.foundation.NSMutableArray;
+import com.webobjects.foundation.NSDictionary;
+import com.webobjects.foundation.NSMutableDictionary;
 
 public class PubEOEntity {
 
 
-	public static NSArray<PubEOEntity> pubEOEntitiesWithModel(EOModel model, NSArray<String> allowedEntities) {
-        NSMutableArray<PubEOEntity> result = new NSMutableArray<PubEOEntity>();
+	public static NSDictionary<String, PubEOEntity> pubEOEntitiesWithModel(EOModel model, NSArray<String> allowedEntities) {
+        NSMutableDictionary<String, PubEOEntity> result = new NSMutableDictionary<String, PubEOEntity>();
 		for (EOEntity entity : model.entities()) {
 
 			if (allowedEntities == null || allowedEntities.contains(entity.name())) {
-				result.addObject(new PubEOEntity(entity.name(), entity.primaryKeyAttributeNames(), PubEOAttribute.attributesWithEntity(entity), PubEORelationship.relationshipsWithEntity(entity)));
+				String entityName = entity.name();
+				PubEOEntity pubEntity = new PubEOEntity(entity.name(), entity.primaryKeyAttributeNames(), PubEOAttribute.attributesWithEntity(entity), PubEORelationship.relationshipsWithEntity(entity));
+				result.setObjectForKey(pubEntity, entityName);
 			}
         }
-        return result;
+		return result;
     }
 
-    private String _name;
+
+	public void updateRelationshipJoins(NSDictionary<String, PubEOEntity> entityByName) {
+		for (PubEORelationship relationship : getRelationships()) {
+			relationship.updateJoins(entityByName);
+		}
+	}
+
+	private String _name;
     private NSArray<PubEORelationship> _relationships;
 	private NSArray<PubEOAttribute> _attributes;
     private NSArray<String> _primaryKeyAttributeNames;
@@ -67,5 +77,13 @@ public class PubEOEntity {
         return _primaryKeyAttributeNames;
     }
 
+	public PubEOAttribute attributeNamed(String name) {
+		for (PubEOAttribute attribute : getAttributes()) {
+			if (attribute.getName().equals(name)) {
+				return attribute;
+			}
+		}
+		return null;
+	}
 
 }

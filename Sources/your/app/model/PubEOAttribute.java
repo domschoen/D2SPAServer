@@ -8,15 +8,22 @@ import com.webobjects.foundation.NSMutableArray;
 
 public class PubEOAttribute {
 
-	
+
 	public static NSArray<PubEOAttribute> attributesWithEntity(EOEntity entity) {
         NSMutableArray<PubEOAttribute> result = new NSMutableArray<PubEOAttribute>();
+
+		// System.out.println("Attributes for entity: " + entity.name());
         for (EOAttribute attribute : entity.attributes()) {
-			result.addObject(new PubEOAttribute(attribute.name()));
+			String attributeName = attribute.name();
+			// System.out.println("attributeName: " + attributeName);
+
+			result.addObject(new PubEOAttribute(attributeName));
         }
+		// System.out.println("Pub Attributes for entity: " + result);
+
         return result;
     }
-	
+
 	public static NSArray<PubEOAttribute> pubEOAttributeWithRelationship(EORelationship relationship) {
         NSMutableArray<PubEOAttribute> result = new NSMutableArray<PubEOAttribute>();
         for (EOAttribute sourceAttribute : relationship.sourceAttributes()) {
@@ -44,5 +51,8 @@ public class PubEOAttribute {
         return _name;
     }
 
-
+	@Override
+	public String toString() {
+		return getName();
+	}
 }

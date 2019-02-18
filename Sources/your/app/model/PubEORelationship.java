@@ -4,16 +4,19 @@ import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModel;
 import com.webobjects.eoaccess.EORelationship;
 import com.webobjects.foundation.NSArray;
+import com.webobjects.foundation.NSDictionary;
 import com.webobjects.foundation.NSMutableArray;
 
 public class PubEORelationship {
 
-    public static NSArray<PubEORelationship> relationshipsWithEntity(EOEntity entity)
+	public static NSArray<PubEORelationship> relationshipsWithEntity(EOEntity entity)
     {
         NSMutableArray<PubEORelationship> result = new NSMutableArray<PubEORelationship>();
         for (EORelationship relationship : entity.relationships()) {
-
-			result.addObject(new PubEORelationship(PubEOAttribute.pubEOAttributeWithRelationship(relationship), relationship.name(), relationship.definition(), relationship.isToMany(), relationship.destinationEntity().name()));
+			NSArray<PubEOAttribute> entityAttributes = PubEOAttribute.pubEOAttributeWithRelationship(relationship);
+			result.addObject(new PubEORelationship(
+			        relationship.name(), relationship.definition(), relationship.isToMany(), relationship.destinationEntity().name(), relationship)
+			        );
         }
         return result;
     }
@@ -33,19 +36,25 @@ public class PubEORelationship {
 	private Boolean _isToMany;
 
     private String _destinationEntityName;
-	private NSArray<PubEOAttribute> _sourceAttributes;
+	private NSArray<PubEOJoin> _joins;
+	private EORelationship _eoRelationship;
 
     public PubEORelationship() {
     }
 
-	public PubEORelationship(NSArray<PubEOAttribute> sourceAttributes, String name, String definition, Boolean isToMany, String destinationEntityName)
+	public PubEORelationship(String name, String definition, Boolean isToMany, String destinationEntityName, EORelationship eoRelationship)
     {
-		setSourceAttributes(sourceAttributes);
+		_eoRelationship = eoRelationship;
         setName(name);
 		setDefinition(definition);
 		setIsToMany(isToMany);
         setDestinationEntityName(destinationEntityName);
     }
+
+	public void updateJoins(NSDictionary<String, PubEOEntity> entityByName) {
+		NSArray<PubEOJoin> joins = PubEOJoin.pubEOJoinWithRelationship(_eoRelationship, entityByName);
+		setJoins(joins);
+	}
 
     public void setName(String name) {
         _name = name;
@@ -78,13 +87,14 @@ public class PubEORelationship {
     public String getDestinationEntityName() {
         return _destinationEntityName;
     }
-	public void setSourceAttributes(NSArray<PubEOAttribute> sourceAttributes) {
-		_sourceAttributes = sourceAttributes;
+	public void setJoins(NSArray<PubEOJoin> joins) {
+		_joins = joins;
 	}
 
-	public NSArray<PubEOAttribute> getSourceAttributes() {
-		return _sourceAttributes;
+	public NSArray<PubEOJoin> getJoins() {
+		return _joins;
 	}
+
 
 
 }
