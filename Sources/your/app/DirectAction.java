@@ -8,6 +8,7 @@ import com.webobjects.directtoweb.D2W;
 import com.webobjects.directtoweb.D2WContext;
 import com.webobjects.eoaccess.EOEntity;
 import com.webobjects.eoaccess.EOModelGroup;
+import com.webobjects.eoaccess.EORelationship;
 import com.webobjects.foundation.NSLog;
 
 import er.directtoweb.ERD2WDirectAction;
@@ -38,6 +39,17 @@ public class DirectAction extends ERD2WDirectAction {
         return null;
     }
 
+	public WOActionResults inverseTheWorldAction() {
+		EOEntity entity = EOModelGroup.defaultGroup().entityNamed("Product");
+		EORelationship relationship = entity.relationshipNamed("customers");
+
+		System.out.println("Reverse relationship of Product.customers " + relationship.inverseRelationship());
+
+		EORelationship relationshipToLink = entity.relationshipNamed("customerProducts");
+		System.out.println("Reverse relationship of Product.customerProducts " + relationshipToLink.inverseRelationship());
+
+		return null;
+	}
     /**
      * Checks if a page configuration is allowed to render.
      * Provide a more intelligent access scheme as the default just returns false. And
