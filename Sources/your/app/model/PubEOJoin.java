@@ -23,8 +23,10 @@ public class PubEOJoin {
 			PubEOEntity pubDestinationEntity = entityByName.objectForKey(destinationEntity.name());
 
 			PubEOAttribute pubSourceAttribute = pubSourceEntity.attributeNamed(sourceAttribute.name());
+			if (pubDestinationEntity == null) {
+				return new NSMutableArray<PubEOJoin>();
+			}
 			PubEOAttribute pubDestinationAttribute = pubDestinationEntity.attributeNamed(destinationAttribute.name());
-
 			result.addObject(new PubEOJoin(pubSourceAttribute, pubDestinationAttribute));
 		}
 		return result;

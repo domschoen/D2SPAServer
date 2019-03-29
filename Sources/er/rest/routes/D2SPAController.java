@@ -37,7 +37,7 @@ public class D2SPAController extends ERXUnsafeReadWriteRouteController{
 		for (String missingKey : missingKeys) {
 			filter.include(missingKey);
 		}
-		// filter.setUnknownKeyIgnored(true);
+		filter.setDeduplicationEnabled(false);
 		return filter;
 	}
 
@@ -64,6 +64,7 @@ public class D2SPAController extends ERXUnsafeReadWriteRouteController{
 		NSSet<String> purifiedKeys = impureKeys.setByIntersectingSet(classPropertyNames);
 		return purifiedKeys.allObjects();
 	}
+
 	@Override
 	public WOActionResults indexAction() {
 		if (isSchemaRequest()) {
@@ -73,14 +74,18 @@ public class D2SPAController extends ERXUnsafeReadWriteRouteController{
 		NSArray<String> purestKeys = null;
 		if (missingKeysString != null) {
 			NSArray<String> missingKeys = NSPropertyListSerialization.arrayForString(missingKeysString);
-			NSArray<String> pureKeys = purifyMissingKeys(missingKeys, entityName());
-			purestKeys = pureKeys.count() > 0 ? pureKeys : null;
+
+			// Why should we do this ?
+			// NSArray<String> pureKeys = purifyMissingKeys(missingKeys,
+			// entityName());
+			// purestKeys = pureKeys.count() > 0 ? pureKeys : null;
+			purestKeys = missingKeys;
 		}
 
 		if (purestKeys == null) {
 			return super.indexAction();
 		} else {
-			ERXRestFetchSpecification fetchSpec = new ERXRestFetchSpecification(entityName(), null, null, queryFilter(), null, 1500);
+			ERXRestFetchSpecification fetchSpec = new ERXRestFetchSpecification(entityName(), null, null, queryFilter(), null, 25000);
 			return response(fetchSpec, fatMissingKeysFilter(purestKeys));
 		}
 	}
